@@ -561,9 +561,9 @@ void read_params(char* path2file)
   /**
      Viscosity CFL = 0.5
    */
-  if (Re  != 0) DT = 0.5*min(DT,sq(L0/N)*Re/4.);
+  /*if (Re  != 0) DT = 0.5*min(DT,sq(L0/N)*Re/4.);
   if (Re4 != 0) DT = 0.5*min(DT,sq(sq(L0/N))*Re4/32.);
-
+  */ 
   fprintf(stdout, "Config: N = %d, nl = %d, L0 = %g\n", N, nl, L0);
 }
 
@@ -584,6 +584,12 @@ void create_outdir()
 @if _MPI
   MPI_Bcast(&dpath, 80, MPI_CHAR, 0, MPI_COMM_WORLD);
 @endif
+}
+
+void set_path_time(char* tmp_path, double time_out)
+{
+  sprintf(dpath, "%s", tmp_path);
+  dtout = time_out; 
 }
 
 void backup_config()

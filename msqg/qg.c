@@ -26,15 +26,12 @@ mpicc -Wall -std=c99 -O2 _qg.c -lm -o qg.e    (-mkl)
 #include "qg_bfn.h"
 
 int main(int argc,char* argv[]) {
-
-  // Search for the configuration file with a given path or read params.in 
-  if (argc == 2) {
-    read_params(argv[1]);
-  } else {
-    read_params("params.in");
-  }
-
-  create_outdir();
+  //double time_out;
+  sscanf(argv[2],"%lf",&tend);
+  sscanf(argv[1],"%s",&dpath);
+  // Seardpath = ch for the configuration file with a given path or read params.in 
+  read_params(strcat(argv[1], "params.in"));
+  //set_path_time(argv[1], time_out)
 
   init_grid (N);
   size(L0);
@@ -47,7 +44,9 @@ int main(int argc,char* argv[]) {
 event init (i = 0) {
 
   FILE * fp;
-  if ((fp = fopen("p0.bas", "r"))) {
+  char name[80];
+  sprintf (name,"%sp_in.bas", dpath);
+  if ((fp = fopen(name, "r"))) {
     input_matrixl (pol, fp);
     fclose(fp);
   } else {
@@ -77,61 +76,14 @@ event writestdout (i++) {
 }
 
 
-event output (t = 0; t <= tend+1e-10;  t += dtout) {
+event output (t = tend) {
   fprintf(stdout,"write file\n");
 
   invertq(pol,qol);
 
   char name[80];
-  sprintf (name,"%spo%09d.bas", dpath, i);
+  sprintf (name,"%sp_out.bas", dpath);
   write_field(pol, name, 0.);
-
-  sprintf (name,"%sqo%09d.bas", dpath, i);
-  write_field(qol, name, 0.);
-
-  if (dtflt > 0) {
-    invertq(tmpl,qofl);
-    sprintf (name,"%spf%09d.bas", dpath, i);
-    write_field(tmpl, name, 0.);
-    nbar = 0; // reset filter average
-  }
-
-  /* scalar l[]; */
-  /* foreach() */
-  /*   l[] = level; */
-  /* sprintf (name,"%slevel%09d.dat", dpath, i); */
-  /* fp = fopen (name, "w"); */
-  /* output_field ({l}, fp); */
-  /* fclose(fp); */
-
-  if (ediag>-1){
-    double idtout = 1/dtout;
-    sprintf (name,"%sde_bf%09d.bas", dpath, i);
-    write_field(de_bfl, name, idtout);
-
-    sprintf (name,"%sde_vd%09d.bas", dpath, i);
-    write_field(de_vdl, name, idtout);
-
-    sprintf (name,"%sde_j1%09d.bas", dpath, i);
-    write_field(de_j1l, name, idtout);
-
-    sprintf (name,"%sde_j2%09d.bas", dpath, i);
-    write_field(de_j2l, name, idtout);
-
-    sprintf (name,"%sde_j3%09d.bas", dpath, i);
-    write_field(de_j3l, name, idtout);
-
-    sprintf (name,"%sde_ft%09d.bas", dpath, i);
-    write_field(de_ftl, name, idtout);
-
-    reset_layer_var(de_bfl);
-    reset_layer_var(de_vdl);
-    reset_layer_var(de_bfl);
-    reset_layer_var(de_j1l);
-    reset_layer_var(de_j2l);
-    reset_layer_var(de_j3l);
-    reset_layer_var(de_ftl);
-  }
 }
 
 /* event adapt (t+=10) { */
