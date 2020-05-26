@@ -564,7 +564,7 @@ void read_params(char* path2file)
   /*if (Re  != 0) DT = 0.5*min(DT,sq(L0/N)*Re/4.);
   if (Re4 != 0) DT = 0.5*min(DT,sq(sq(L0/N))*Re4/32.);
   */ 
-  fprintf(stdout, "Config: N = %d, nl = %d, L0 = %g\n", N, nl, L0);
+  //fprintf(stdout, "Config: N = %d, nl = %d, L0 = %g\n", N, nl, L0);
 }
 
 /**
@@ -644,7 +644,7 @@ void backup_config()
 
 void set_vars()
 {
-  fprintf(stdout,"Create main variables .. ");
+  //fprintf(stdout,"Create main variables .. ");
   pol   = create_layer_var(pol,nl,0);
   qol   = create_layer_var(qol,nl,0);
   ppl   = create_layer_var(ppl,nl,0);
@@ -700,7 +700,7 @@ void set_vars()
 
   advance = advance_qg;
   update = update_qg;
-  fprintf(stdout,"ok\n");
+  //fprintf(stdout,"ok\n");
 }
 
 event defaults (i = 0){
@@ -712,7 +712,7 @@ void set_const() {
 /**
    Layer thickness and large scale variables
 */
-  fprintf(stdout, "Read input files:\n");
+  //fprintf(stdout, "Read input files:\n");
 
   char name[80];
   FILE * fp;
