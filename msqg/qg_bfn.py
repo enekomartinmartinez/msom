@@ -31,7 +31,7 @@ bas.read_params(params_file)
 bas.init_grid(N)
 bas.set_vars()
 bas.set_vars_bfn()
-bas.set_const()
+bas.set_const('./')
 
 # initial condition
 p  = np.zeros((nl,N,N))
@@ -75,6 +75,8 @@ if flag_q:
 else:
   p = np.copy(var)
   bas.pyp2q(p,q)
+
+print("done")
 
 # the following two lines will cause a segmentation fault if the
 # script is run interactively

@@ -741,16 +741,16 @@ event defaults (i = 0){
   set_vars();
 }
 
-void set_const() {
+void set_const(char *path) {
 
 /**
    Layer thickness and large scale variables
 */
   //fprintf(stdout, "Read input files:\n");
 
-  char name[80];
+  char name[160];
   FILE * fp;
-  sprintf (name,"dh_%dl.bin", nl);
+  sprintf (name,"%sdh_%dl.bin", path, nl);
   if ((fp = fopen (name, "r"))) {
     float dh[nl];
     fread(&dh, sizeof(float), nl, fp);
@@ -760,28 +760,28 @@ void set_const() {
     fprintf(stdout, "%s .. ok\n", name);
   }
 
-  sprintf (name,"psipg_%dl_N%d.bas", nl,N);
+  sprintf (name,"%spsipg_%dl_N%d.bas", path, nl, N);
   if ((fp = fopen (name, "r"))) {
     input_matrixl (ppl, fp);
     fclose(fp);
     fprintf(stdout, "%s .. ok\n", name);
   }
 
-  sprintf (name,"frpg_%dl_N%d.bas", nl,N);
+  sprintf (name,"%sfrpg_%dl_N%d.bas", path, nl, N);
   if ((fp = fopen (name, "r"))) {
     input_matrixl (Frl, fp);
     fclose(fp);
     fprintf(stdout, "%s .. ok\n", name);
   }
 
-  sprintf (name,"rdpg_%dl_N%d.bas", nl,N);
+  sprintf (name,"%srdpg_%dl_N%d.bas", path, nl, N);
   if ((fp = fopen (name, "r"))) {
     input_matrixl ({Rd}, fp);
     fclose(fp);
     fprintf(stdout, "%s .. ok\n", name);
   }
 
-  sprintf (name,"topo.bas", nl,N);
+  sprintf (name,"%stopo.bas", path);
   if ((fp = fopen (name, "r"))) {
     flag_topo = 1;
     input_matrixl ({topo}, fp);
@@ -903,7 +903,7 @@ into account user-defined field initialisations. */
 
 event init (i = 0)
 {
-  set_const();
+  set_const("./");
 }
 
 /**
