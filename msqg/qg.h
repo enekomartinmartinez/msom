@@ -786,7 +786,7 @@ void set_const(char *path) {
     flag_topo = 1;
     input_matrixl ({topo}, fp);
     fclose(fp);
-    fprintf(stdout, "%s .. ok\n", name);
+    //fprintf(stdout, "%s .. ok\n", name);
   }
 
   /**
